@@ -206,7 +206,7 @@ details:not([open]) > summary.label{margin-bottom:0;border-bottom-color:var(--ru
 .hp-row{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:center;gap:8px;margin:6px 0 14px}
 .hp-input{
   width:110px;background:var(--panel);border:1px solid var(--rule);color:var(--ochre);
-  font-family:'Vollkorn',serif;font-weight:900;font-size:2.6rem;text-align:right;
+  font-family:'Vollkorn',serif;font-weight:900;font-size:2.6rem;text-align:center;
   padding:2px 8px;border-radius:2px;-moz-appearance:textfield;
 }
 .hp-input::-webkit-outer-spin-button,.hp-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
@@ -281,13 +281,20 @@ details:not([open]) > summary.label{margin-bottom:0;border-bottom-color:var(--ru
   font-family:'Barlow Condensed',sans-serif;font-weight:500;font-size:.9rem;color:var(--bone-dim);
   text-transform:uppercase;letter-spacing:.14em;margin-right:10px;vertical-align:middle;
 }
+.dice-history-row{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;margin-top:10px}
 .dice-history{
-  display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:10px;
-  font-size:.82rem;color:var(--bone-dim);min-height:1.2em;max-width:100%;
+  display:flex;flex-wrap:wrap;gap:6px 12px;flex:1;min-width:0;
+  font-size:.82rem;color:var(--bone-dim);min-height:1.2em;
 }
 .dice-history .hist-item{white-space:nowrap}
 .dice-history .hist-item .hist-label{font-weight:700;color:var(--bone)}
 .dice-history .hist-item .hist-value{color:var(--moss);font-weight:700;margin-left:3px}
+.clear-history-btn{
+  flex:none;background:none;border:1px solid var(--rule);color:var(--bone-dim);
+  padding:4px 10px;cursor:pointer;border-radius:2px;font-family:'Barlow Condensed','Arial Narrow',sans-serif;
+  font-weight:500;text-transform:uppercase;letter-spacing:.12em;font-size:.66rem;transition:all .15s;
+}
+.clear-history-btn:hover{color:var(--ochre);border-color:var(--ochre)}
 </style>
 
 <div class="wrap">
@@ -401,7 +408,10 @@ details:not([open]) > summary.label{margin-bottom:0;border-bottom-color:var(--ru
           <button type="button" class="die-btn" data-sides="20">D20</button>
         </div>
         <div class="dice-result" id="diceResult" aria-live="polite">&mdash;</div>
-        <div class="dice-history" id="diceHistory"></div>
+        <div class="dice-history-row">
+          <div class="dice-history" id="diceHistory"></div>
+          <button type="button" id="clearHistory" class="clear-history-btn">Clear</button>
+        </div>
       </div>
     </div>
 
@@ -911,5 +921,13 @@ details:not([open]) > summary.label{margin-bottom:0;border-bottom-color:var(--ru
       })();
     });
   });
+
+  var clearBtn = document.getElementById('clearHistory');
+  if(clearBtn){
+    clearBtn.addEventListener('click', function(){
+      rolls = [];
+      history.innerHTML = '';
+    });
+  }
 })();
 </script>
