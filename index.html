@@ -330,14 +330,13 @@ details:not([open]) > summary.label{margin-bottom:0;border-bottom-color:var(--ru
   .ps-page{}
   .ps-page:not(:last-child){page-break-after:always;break-after:page}
 
-  .ps-columns{display:grid;grid-template-columns:1fr 1fr;gap:16px}
-  .ps-col{display:flex;flex-direction:column;gap:14px;min-width:0}
-  .ps-box{border:1px solid #000;padding:10px 14px;page-break-inside:avoid;break-inside:avoid;min-width:0}
+  .ps-columns{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .ps-col{display:flex;flex-direction:column;gap:12px;min-width:0}
+  .ps-box{border:1px solid #000;padding:9px 12px;page-break-inside:avoid;break-inside:avoid;min-width:0}
   .ps-box-title{
     font-size:9.5pt;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
     border-bottom:1px solid #000;padding-bottom:4px;margin-bottom:8px;
   }
-  .ps-box-title .ps-box-note{font-weight:400;text-transform:none;letter-spacing:normal;font-size:8pt}
 
   .ps-abilities{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;padding:8px}
   .ps-ability{border:1px solid #000;text-align:center;padding:7px 4px;min-width:0}
@@ -498,15 +497,6 @@ details:not([open]) > summary.label{margin-bottom:0;border-bottom-color:var(--ru
             <li><span class="ps-sk-name">Luck Points (long rest)</span><span class="ps-ticks"><span class="ps-tick"></span><span class="ps-tick"></span></span></li>
             <li><span class="ps-sk-name">Heroic Inspiration (long rest)</span><span class="ps-ticks"><span class="ps-tick"></span></span></li>
             <li><span class="ps-sk-name">Uncanny Metabolism (long rest)</span><span class="ps-ticks"><span class="ps-tick"></span></span></li>
-          </ul>
-        </div>
-
-        <div class="ps-box">
-          <div class="ps-box-title">Open Hand Technique <span class="ps-box-note">(one per Flurry hit)</span></div>
-          <ul class="ps-features">
-            <li><b>Topple</b> &mdash; DC 13 Dex save or Prone.</li>
-            <li><b>Push</b> &mdash; DC 13 Str save, shoved 15 ft.</li>
-            <li><b>Addle</b> &mdash; No Opportunity Attacks until the start of its next turn.</li>
           </ul>
         </div>
       </div>
