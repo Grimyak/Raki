@@ -331,34 +331,39 @@ details:not([open]) > summary.label{margin-bottom:0;border-bottom-color:var(--ru
   .ps-page:not(:last-child){page-break-after:always;break-after:page}
 
   .ps-columns{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-  .ps-col{display:flex;flex-direction:column;gap:8px}
-  .ps-box{border:1px solid #000;padding:5px 7px;page-break-inside:avoid;break-inside:avoid}
+  .ps-col{display:flex;flex-direction:column;gap:8px;min-width:0}
+  .ps-box{border:1px solid #000;padding:5px 7px;page-break-inside:avoid;break-inside:avoid;min-width:0}
   .ps-box-title{
     font-size:7.5pt;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
     border-bottom:1px solid #000;padding-bottom:2px;margin-bottom:4px;
   }
 
   .ps-abilities{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:6px}
-  .ps-ability{border:1px solid #000;text-align:center;padding:3px 2px}
+  .ps-ability{border:1px solid #000;text-align:center;padding:3px 2px;min-width:0}
   .ps-ability .ps-a-name{font-size:6.5pt;text-transform:uppercase;font-weight:700}
   .ps-ability .ps-a-mod{font-size:13pt;font-weight:700;line-height:1.15}
   .ps-ability .ps-a-score{font-size:7pt}
 
-  .ps-list{list-style:none;margin:0;padding:0}
-  .ps-list li{display:flex;align-items:baseline;gap:5px;padding:1.5px 0;font-size:8pt;border-bottom:1px dotted #999}
+  .ps-list{list-style:none;margin:0;padding:0;min-width:0}
+  .ps-list li{display:flex;align-items:baseline;gap:5px;padding:1.5px 0;font-size:8pt;border-bottom:1px dotted #999;min-width:0}
   .ps-list li:last-child{border-bottom:0}
   .ps-tick{display:inline-block;width:7px;height:7px;border:1px solid #000;border-radius:50%;flex:none}
   .ps-tick.filled{background:#000}
-  .ps-list .ps-sk-name{flex:1}
-  .ps-list .ps-sk-val{font-weight:700;width:2.4em;text-align:right}
+  .ps-list .ps-sk-name{flex:1;min-width:0}
+  .ps-list .ps-sk-val{font-weight:700;width:2.4em;flex:none;min-width:0;text-align:right}
+
+  /* Proficiencies: label is short, value is the long descriptive text -
+     invert the usual name/val flex roles so the value wraps instead of squeezing */
+  .ps-profs .ps-sk-name{flex:0 0 60pt}
+  .ps-profs .ps-sk-val{flex:1;width:auto;min-width:0;text-align:left}
 
   .ps-combat-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;text-align:center}
-  .ps-combat-stats div{border:1px solid #000;padding:4px 2px}
+  .ps-combat-stats div{border:1px solid #000;padding:4px 2px;min-width:0}
   .ps-combat-stats b{display:block;font-size:14pt}
   .ps-combat-stats span{font-size:6.5pt;text-transform:uppercase}
 
   .ps-hp-row{display:flex;gap:6px;margin-bottom:4px}
-  .ps-hp-box{flex:1;border:1px solid #000;padding:4px;text-align:center}
+  .ps-hp-box{flex:1;border:1px solid #000;padding:4px;text-align:center;min-width:0}
   .ps-hp-box b{display:block;font-size:6.5pt;text-transform:uppercase;font-weight:700}
   .ps-hp-box .ps-fill{display:block;border-bottom:1px solid #000;height:16px;margin-top:2px}
   .ps-hd-ds{display:flex;justify-content:space-between;gap:10px;font-size:7.5pt;flex-wrap:wrap}
@@ -501,7 +506,7 @@ details:not([open]) > summary.label{margin-bottom:0;border-bottom-color:var(--ru
   <div class="ps-page">
     <div class="ps-columns">
       <div class="ps-col">
-        <div class="ps-box">
+        <div class="ps-box ps-profs">
           <div class="ps-box-title">Proficiencies &amp; Languages</div>
           <ul class="ps-list">
             <li><span class="ps-sk-name">Armor</span><span class="ps-sk-val">None</span></li>
