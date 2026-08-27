@@ -17,6 +17,7 @@
   --oxblood:#9c4139;
   --bead:#59636f;
   --leather:#8a6844;
+  --moss:#5f8f5a;
 }
 *{box-sizing:border-box}
 html{-webkit-text-size-adjust:100%}
@@ -234,6 +235,36 @@ details:not([open]) > summary.label{margin-bottom:0;border-bottom-color:var(--ru
 .ds-row{display:flex;align-items:center;gap:10px;margin-top:8px}
 .ds-row .ds-label{width:80px;font-size:.85rem;color:var(--bone-dim)}
 .rest-row{display:flex;gap:10px;justify-content:flex-end;margin-top:8px}
+.resource-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--rule)}
+.resource-row:last-child{border-bottom:0}
+.res-label{
+  width:88px;flex:none;font-family:'Barlow Condensed','Arial Narrow',sans-serif;
+  text-transform:uppercase;letter-spacing:.14em;font-size:.72rem;color:var(--bone-dim);
+}
+.ability-list{margin-top:26px}
+.ability-row{
+  display:flex;align-items:center;justify-content:space-between;gap:20px;
+  padding:14px 0;border-bottom:1px solid var(--rule);
+}
+.ability-row:last-child{border-bottom:0}
+.ability-info h3{font-size:1rem;color:var(--bone);margin-bottom:3px}
+.ability-info h3 .cost{
+  font-family:'Barlow Condensed',sans-serif;text-transform:uppercase;letter-spacing:.16em;font-size:.62rem;
+  color:var(--ochre);margin-left:10px;border:1px solid var(--ochre);padding:2px 7px;border-radius:2px;white-space:nowrap;
+}
+.ability-info p{margin:4px 0 0;font-size:.9rem;color:var(--bone-dim)}
+.ability-btn{
+  flex:none;background:none;border:1px solid var(--ochre);color:var(--ochre);padding:9px 16px;
+  cursor:pointer;border-radius:2px;font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:500;
+  text-transform:uppercase;letter-spacing:.12em;font-size:.74rem;transition:all .15s;white-space:nowrap;
+}
+.ability-btn .cost{margin-left:8px;color:inherit;font-size:.9em;opacity:.85}
+.ability-btn:hover:not(:disabled){background:var(--ochre);color:var(--ink)}
+.ability-btn:disabled{border-color:var(--rule);color:var(--bone-dim);cursor:default;opacity:.6}
+@media(max-width:640px){
+  .ability-row{flex-direction:column;align-items:flex-start}
+  .ability-btn{align-self:stretch}
+}
 .dice-card{grid-column:span 2;min-width:0}
 .dice-buttons{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}
 .die-btn{
@@ -253,6 +284,8 @@ details:not([open]) > summary.label{margin-bottom:0;border-bottom-color:var(--ru
   font-size:.82rem;color:var(--bone-dim);min-height:1.2em;max-width:100%;
 }
 .dice-history .hist-item{white-space:nowrap}
+.dice-history .hist-item .hist-label{font-weight:700;color:var(--bone)}
+.dice-history .hist-item .hist-value{color:var(--moss);font-weight:700;margin-left:3px}
 </style>
 
 <div class="wrap">
@@ -341,16 +374,19 @@ details:not([open]) > summary.label{margin-bottom:0;border-bottom-color:var(--ru
         </div>
       </div>
       <div class="card">
-        <span class="kind">Focus Points</span>
-        <div class="pip-row" id="focusPips"></div><span class="pip-count" id="focusCount">3/3</span>
-      </div>
-      <div class="card">
-        <span class="kind">Luck Points</span>
-        <div class="pip-row" id="luckPips"></div><span class="pip-count" id="luckCount">2/2</span>
-      </div>
-      <div class="card">
-        <span class="kind">Heroic Inspiration</span>
-        <div class="pip-row" id="inspoPips"></div><span class="pip-count" id="inspoCount">1/1</span>
+        <span class="kind">Resources</span>
+        <div class="resource-row">
+          <span class="res-label">Focus</span>
+          <div class="pip-row" id="focusPips"></div><span class="pip-count" id="focusCount">3/3</span>
+        </div>
+        <div class="resource-row">
+          <span class="res-label">Luck</span>
+          <div class="pip-row" id="luckPips"></div><span class="pip-count" id="luckCount">2/2</span>
+        </div>
+        <div class="resource-row">
+          <span class="res-label">Inspiration</span>
+          <div class="pip-row" id="inspoPips"></div><span class="pip-count" id="inspoCount">1/1</span>
+        </div>
       </div>
       <div class="card dice-card">
         <span class="kind">Dice Roller</span>
@@ -366,6 +402,54 @@ details:not([open]) > summary.label{margin-bottom:0;border-bottom-color:var(--ru
         <div class="dice-history" id="diceHistory"></div>
       </div>
     </div>
+
+    <div class="ability-list">
+      <span class="label" style="display:block;margin:26px 0 10px">Abilities</span>
+      <div class="ability-row">
+        <div class="ability-info">
+          <h3>Flurry of Blows</h3>
+          <p>Two Unarmed Strikes as a Bonus Action, each +6 to hit for 1d6+4 and imposing one Open Hand effect (Topple/Push: DC 13 save).</p>
+        </div>
+        <button type="button" class="ability-btn" data-pool="focus" data-amount="1">Use <span class="cost">1 Focus</span></button>
+      </div>
+      <div class="ability-row">
+        <div class="ability-info">
+          <h3>Patient Defense</h3>
+          <p>Disengage and Dodge as a Bonus Action.</p>
+        </div>
+        <button type="button" class="ability-btn" data-pool="focus" data-amount="1">Use <span class="cost">1 Focus</span></button>
+      </div>
+      <div class="ability-row">
+        <div class="ability-info">
+          <h3>Step of the Wind</h3>
+          <p>Disengage and Dash as a Bonus Action, jump distance doubled.</p>
+        </div>
+        <button type="button" class="ability-btn" data-pool="focus" data-amount="1">Use <span class="cost">1 Focus</span></button>
+      </div>
+      <div class="ability-row">
+        <div class="ability-info">
+          <h3>Deflect Attacks &middot; Redirect</h3>
+          <p>Reduces a bludgeoning, piercing, or slashing hit by 1d10+7.</p>
+          <p>Redirect threshold: only if that reduction brings the hit to exactly 0. Attacker (5 ft melee / 60 ft ranged) makes a DC 13 Dex save or takes 2d6+4 of the same type.</p>
+        </div>
+        <button type="button" class="ability-btn" data-pool="focus" data-amount="1">Use <span class="cost">1 Focus</span></button>
+      </div>
+      <div class="ability-row">
+        <div class="ability-info">
+          <h3>Lucky</h3>
+          <p>Spend for advantage on a d20 test, or to impose disadvantage on an attack against him.</p>
+        </div>
+        <button type="button" class="ability-btn" data-pool="luck" data-amount="1">Use <span class="cost">1 Luck</span></button>
+      </div>
+      <div class="ability-row">
+        <div class="ability-info">
+          <h3>Uncanny Metabolism <span class="cost">1/long rest</span></h3>
+          <p>Restores all Focus Points automatically. Roll 1d6+3 and add the result to Hit Points above.</p>
+        </div>
+        <button type="button" class="ability-btn" id="umBtn">Use</button>
+      </div>
+    </div>
+
     <div class="rest-row">
       <button type="button" id="shortRest">Short Rest</button>
       <button type="button" id="longRest">Long Rest</button>
@@ -634,7 +718,7 @@ details:not([open]) > summary.label{margin-bottom:0;border-bottom-color:var(--ru
   if(!hpInput) return;
 
   function defaultState(){
-    return {hp:MAX_HP, focus:3, luck:2, inspo:1, dsSuccess:0, dsFail:0};
+    return {hp:MAX_HP, focus:3, luck:2, inspo:1, dsSuccess:0, dsFail:0, umUsed:false};
   }
   function loadState(){
     try{
@@ -701,11 +785,44 @@ details:not([open]) > summary.label{margin-bottom:0;border-bottom-color:var(--ru
       var countEl = document.getElementById(cfg.countId);
       if(countEl) countEl.textContent = state[key] + '/' + cfg.max;
     }
+    refreshAbilityButtons();
+  }
+
+  function refreshAbilityButtons(){
+    Array.prototype.forEach.call(document.querySelectorAll('.ability-btn[data-pool]'), function(btn){
+      var pool = btn.getAttribute('data-pool');
+      var amount = parseInt(btn.getAttribute('data-amount'), 10);
+      btn.disabled = state[pool] < amount;
+    });
+    var umBtn = document.getElementById('umBtn');
+    if(umBtn) umBtn.disabled = state.umUsed;
   }
 
   Object.keys(pools).forEach(buildPips);
   Object.keys(pools).forEach(renderPool);
   renderHP();
+
+  Array.prototype.forEach.call(document.querySelectorAll('.ability-btn[data-pool]'), function(btn){
+    btn.addEventListener('click', function(){
+      var pool = btn.getAttribute('data-pool');
+      var amount = parseInt(btn.getAttribute('data-amount'), 10);
+      if(state[pool] < amount) return;
+      state[pool] -= amount;
+      renderPool(pool);
+      saveState();
+    });
+  });
+
+  var umBtn = document.getElementById('umBtn');
+  if(umBtn){
+    umBtn.addEventListener('click', function(){
+      if(state.umUsed) return;
+      state.focus = pools.focus.max;
+      state.umUsed = true;
+      renderPool('focus');
+      saveState();
+    });
+  }
 
   hpInput.addEventListener('change', function(){ setHP(parseInt(hpInput.value, 10)); });
   document.getElementById('hpDamage').addEventListener('click', function(){
@@ -727,11 +844,13 @@ details:not([open]) > summary.label{margin-bottom:0;border-bottom-color:var(--ru
     state.inspo = pools.inspo.max;
     state.dsSuccess = 0;
     state.dsFail = 0;
+    state.umUsed = false;
     renderPool('focus');
     renderPool('luck');
     renderPool('inspo');
     renderPool('dsSuccess');
     renderPool('dsFail');
+    refreshAbilityButtons();
     setHP(MAX_HP);
   });
 })();
@@ -751,9 +870,12 @@ details:not([open]) > summary.label{margin-bottom:0;border-bottom-color:var(--ru
     result.innerHTML = '<span class="die-label">' + label + '</span>' + value;
   }
   function recordRoll(label, value){
-    rolls.unshift(label + ':' + value);
+    rolls.unshift({label: label, value: value});
     rolls = rolls.slice(0, HISTORY_MAX);
-    history.innerHTML = rolls.map(function(r){ return '<span class="hist-item">' + r + '</span>'; }).join('');
+    history.innerHTML = rolls.map(function(r){
+      return '<span class="hist-item"><span class="hist-label">' + r.label + '</span>'
+        + '<span class="hist-value">' + r.value + '</span></span>';
+    }).join('');
   }
 
   dieButtons.forEach(function(btn){
