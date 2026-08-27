@@ -289,6 +289,10 @@ details:not([open]) > summary.label{margin-bottom:0;border-bottom-color:var(--ru
 .dice-history .hist-item{white-space:nowrap}
 .dice-history .hist-item .hist-label{font-weight:700;color:var(--bone)}
 .dice-history .hist-item .hist-value{color:var(--moss);font-weight:700;margin-left:3px}
+.history-actions{display:flex;flex:none;align-items:center;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.history-total{
+  font-family:'Vollkorn',serif;font-weight:700;font-size:.92rem;color:var(--moss);white-space:nowrap;
+}
 .clear-history-btn{
   flex:none;background:none;border:1px solid var(--rule);color:var(--bone-dim);
   padding:4px 10px;cursor:pointer;border-radius:2px;font-family:'Barlow Condensed','Arial Narrow',sans-serif;
@@ -410,7 +414,11 @@ details:not([open]) > summary.label{margin-bottom:0;border-bottom-color:var(--ru
         <div class="dice-result" id="diceResult" aria-live="polite">&mdash;</div>
         <div class="dice-history-row">
           <div class="dice-history" id="diceHistory"></div>
-          <button type="button" id="clearHistory" class="clear-history-btn">Clear</button>
+          <div class="history-actions">
+            <span class="history-total" id="historyTotal" hidden></span>
+            <button type="button" id="totalHistory" class="clear-history-btn">Total</button>
+            <button type="button" id="clearHistory" class="clear-history-btn">Clear</button>
+          </div>
         </div>
       </div>
     </div>
@@ -881,6 +889,12 @@ details:not([open]) > summary.label{margin-bottom:0;border-bottom-color:var(--ru
   function showValue(label, value){
     result.innerHTML = '<span class="die-label">' + label + '</span>' + value;
   }
+  var historyTotal = document.getElementById('historyTotal');
+  function hideTotal(){
+    if(!historyTotal) return;
+    historyTotal.hidden = true;
+    historyTotal.textContent = '';
+  }
   function recordRoll(label, value){
     rolls.unshift({label: label, value: value});
     rolls = rolls.slice(0, HISTORY_MAX);
@@ -888,6 +902,7 @@ details:not([open]) > summary.label{margin-bottom:0;border-bottom-color:var(--ru
       return '<span class="hist-item"><span class="hist-label">' + r.label + '</span>'
         + '<span class="hist-value">' + r.value + '</span></span>';
     }).join('');
+    hideTotal();
   }
 
   dieButtons.forEach(function(btn){
@@ -927,6 +942,16 @@ details:not([open]) > summary.label{margin-bottom:0;border-bottom-color:var(--ru
     clearBtn.addEventListener('click', function(){
       rolls = [];
       history.innerHTML = '';
+      hideTotal();
+    });
+  }
+
+  var totalBtn = document.getElementById('totalHistory');
+  if(totalBtn && historyTotal){
+    totalBtn.addEventListener('click', function(){
+      var sum = rolls.reduce(function(acc, r){ return acc + r.value; }, 0);
+      historyTotal.textContent = 'Total: ' + sum;
+      historyTotal.hidden = false;
     });
   }
 })();
