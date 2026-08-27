@@ -151,9 +151,8 @@ section > .label{display:block;border-bottom:1px solid var(--rule);padding-botto
 }
 @media print{
   body{background:#fff;color:#000}
-  .art,.card,.vital,.abil,.portrait{background:#fff}
-  .wrap{max-width:none;filter:grayscale(1)}
-  #inplay,.print-btn,.art img,.portrait,.closing{display:none}
+  .wrap,.print-btn{display:none}
+  .print-sheet{display:block}
 }
 @media(prefers-reduced-motion:no-preference){
   .mast h1{animation:rise .7s cubic-bezier(.2,.7,.3,1) both}
@@ -187,7 +186,6 @@ details:not([open]) > summary.label{margin-bottom:0;border-bottom-color:var(--ru
 #toggleAll:hover{color:var(--ochre);border-color:var(--ochre)}
 #toggleAll:focus-visible{outline:2px solid var(--ochre);outline-offset:3px}
 @media(prefers-reduced-motion:reduce){summary.label::after{transition:none}}
-@media print{#toggleAll{display:none}}
 
 .kind{
   display:block;font-family:'Barlow Condensed','Arial Narrow',sans-serif;font-weight:500;
@@ -310,11 +308,237 @@ details:not([open]) > summary.label{margin-bottom:0;border-bottom-color:var(--ru
 .print-btn:hover{color:var(--ochre);border-color:var(--ochre)}
 @media(max-width:480px){.print-btn{top:10px;right:10px;padding:6px 10px;font-size:.62rem}}
 
-.notes-block{display:flex;flex-direction:column;gap:28px;padding-top:8px}
-.notes-line{border-bottom:1px solid var(--rule);height:1px}
+.print-sheet{display:none}
+@media print{
+  .print-sheet{
+    display:block;color:#000;background:#fff;font-family:Arial,Helvetica,sans-serif;
+    font-size:9pt;line-height:1.3;
+  }
+  .print-sheet *{color:#000;box-sizing:border-box}
+
+  .ps-header{
+    border:1.5px solid #000;padding:6px 10px;margin-bottom:6px;
+    display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:6px 18px;
+  }
+  .ps-name{font-size:20pt;font-weight:700;letter-spacing:.02em}
+  .ps-subhead{display:flex;gap:16px;flex-wrap:wrap;font-size:8pt}
+  .ps-subhead div{display:flex;flex-direction:column}
+  .ps-subhead .ps-label{font-size:6.5pt;text-transform:uppercase;letter-spacing:.06em}
+  .ps-subhead .ps-val{font-weight:700}
+
+  .ps-columns{display:grid;grid-template-columns:1.05fr 1.15fr 1fr;gap:6px}
+  .ps-col{display:flex;flex-direction:column;gap:6px}
+  .ps-box{border:1px solid #000;padding:5px 7px}
+  .ps-box-title{
+    font-size:7.5pt;font-weight:700;text-transform:uppercase;letter-spacing:.08em;
+    border-bottom:1px solid #000;padding-bottom:2px;margin-bottom:4px;
+  }
+
+  .ps-abilities{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;padding:6px}
+  .ps-ability{border:1px solid #000;text-align:center;padding:3px 2px}
+  .ps-ability .ps-a-name{font-size:6.5pt;text-transform:uppercase;font-weight:700}
+  .ps-ability .ps-a-mod{font-size:13pt;font-weight:700;line-height:1.15}
+  .ps-ability .ps-a-score{font-size:7pt}
+
+  .ps-list{list-style:none;margin:0;padding:0}
+  .ps-list li{display:flex;align-items:baseline;gap:5px;padding:1.5px 0;font-size:8pt;border-bottom:1px dotted #999}
+  .ps-list li:last-child{border-bottom:0}
+  .ps-tick{display:inline-block;width:7px;height:7px;border:1px solid #000;border-radius:50%;flex:none}
+  .ps-tick.filled{background:#000}
+  .ps-list .ps-sk-name{flex:1}
+  .ps-list .ps-sk-val{font-weight:700;width:2.4em;text-align:right}
+
+  .ps-combat-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;text-align:center}
+  .ps-combat-stats div{border:1px solid #000;padding:4px 2px}
+  .ps-combat-stats b{display:block;font-size:14pt}
+  .ps-combat-stats span{font-size:6.5pt;text-transform:uppercase}
+
+  .ps-hp-row{display:flex;gap:6px;margin-bottom:4px}
+  .ps-hp-box{flex:1;border:1px solid #000;padding:4px;text-align:center}
+  .ps-hp-box b{display:block;font-size:6.5pt;text-transform:uppercase;font-weight:700}
+  .ps-hp-box .ps-fill{display:block;border-bottom:1px solid #000;height:16px;margin-top:2px}
+  .ps-hd-ds{display:flex;justify-content:space-between;gap:10px;font-size:7.5pt;flex-wrap:wrap}
+  .ps-ticks{display:inline-flex;gap:3px;margin-left:4px}
+
+  .ps-table{width:100%;border-collapse:collapse;font-size:7.8pt}
+  .ps-table th,.ps-table td{border:1px solid #000;padding:2px 4px;text-align:left}
+  .ps-table th{font-size:6.5pt;text-transform:uppercase}
+
+  .ps-features{font-size:7.8pt;margin:0;padding:0;list-style:none}
+  .ps-features li{margin-bottom:4px}
+
+  .ps-notes-fill{border-bottom:1px solid #000;height:14px;margin-top:8px}
+}
 </style>
 
 <button type="button" id="printBtn" class="print-btn" aria-label="View a printable character sheet">Print Version</button>
+
+<div class="print-sheet" id="printSheet">
+  <div class="ps-header">
+    <div class="ps-name">RAKI</div>
+    <div class="ps-subhead">
+      <div><span class="ps-label">Class &amp; Level</span><span class="ps-val">Monk 3</span></div>
+      <div><span class="ps-label">Background</span><span class="ps-val">Wayfarer</span></div>
+      <div><span class="ps-label">Species</span><span class="ps-val">Human</span></div>
+      <div><span class="ps-label">Alignment</span><span class="ps-val">Neutral Good</span></div>
+      <div><span class="ps-label">Subclass</span><span class="ps-val">Warrior of the Open Hand</span></div>
+    </div>
+  </div>
+
+  <div class="ps-columns">
+    <div class="ps-col">
+      <div class="ps-box">
+        <div class="ps-abilities">
+          <div class="ps-ability"><div class="ps-a-name">Str</div><div class="ps-a-mod">&minus;2</div><div class="ps-a-score">6</div></div>
+          <div class="ps-ability"><div class="ps-a-name">Dex</div><div class="ps-a-mod">+4</div><div class="ps-a-score">19</div></div>
+          <div class="ps-ability"><div class="ps-a-name">Con</div><div class="ps-a-mod">+1</div><div class="ps-a-score">12</div></div>
+          <div class="ps-ability"><div class="ps-a-name">Int</div><div class="ps-a-mod">+0</div><div class="ps-a-score">11</div></div>
+          <div class="ps-ability"><div class="ps-a-name">Wis</div><div class="ps-a-mod">+3</div><div class="ps-a-score">16</div></div>
+          <div class="ps-ability"><div class="ps-a-name">Cha</div><div class="ps-a-mod">+0</div><div class="ps-a-score">11</div></div>
+        </div>
+      </div>
+
+      <div class="ps-box">
+        <div class="ps-box-title">Saving Throws</div>
+        <ul class="ps-list">
+          <li><span class="ps-tick filled"></span><span class="ps-sk-name">Strength</span><span class="ps-sk-val">+0</span></li>
+          <li><span class="ps-tick filled"></span><span class="ps-sk-name">Dexterity</span><span class="ps-sk-val">+6</span></li>
+          <li><span class="ps-tick"></span><span class="ps-sk-name">Constitution</span><span class="ps-sk-val">+1</span></li>
+          <li><span class="ps-tick"></span><span class="ps-sk-name">Intelligence</span><span class="ps-sk-val">+0</span></li>
+          <li><span class="ps-tick"></span><span class="ps-sk-name">Wisdom</span><span class="ps-sk-val">+3</span></li>
+          <li><span class="ps-tick"></span><span class="ps-sk-name">Charisma</span><span class="ps-sk-val">+0</span></li>
+        </ul>
+      </div>
+
+      <div class="ps-box">
+        <div class="ps-box-title">Skills</div>
+        <ul class="ps-list">
+          <li><span class="ps-tick filled"></span><span class="ps-sk-name">Acrobatics (Dex)</span><span class="ps-sk-val">+6</span></li>
+          <li><span class="ps-tick"></span><span class="ps-sk-name">Animal Handling (Wis)</span><span class="ps-sk-val">+3</span></li>
+          <li><span class="ps-tick"></span><span class="ps-sk-name">Arcana (Int)</span><span class="ps-sk-val">+0</span></li>
+          <li><span class="ps-tick"></span><span class="ps-sk-name">Athletics (Str)</span><span class="ps-sk-val">&minus;2</span></li>
+          <li><span class="ps-tick"></span><span class="ps-sk-name">Deception (Cha)</span><span class="ps-sk-val">+0</span></li>
+          <li><span class="ps-tick"></span><span class="ps-sk-name">History (Int)</span><span class="ps-sk-val">+0</span></li>
+          <li><span class="ps-tick filled"></span><span class="ps-sk-name">Insight (Wis)</span><span class="ps-sk-val">+5</span></li>
+          <li><span class="ps-tick"></span><span class="ps-sk-name">Intimidation (Cha)</span><span class="ps-sk-val">+0</span></li>
+          <li><span class="ps-tick"></span><span class="ps-sk-name">Investigation (Int)</span><span class="ps-sk-val">+0</span></li>
+          <li><span class="ps-tick"></span><span class="ps-sk-name">Medicine (Wis)</span><span class="ps-sk-val">+3</span></li>
+          <li><span class="ps-tick"></span><span class="ps-sk-name">Nature (Int)</span><span class="ps-sk-val">+0</span></li>
+          <li><span class="ps-tick filled"></span><span class="ps-sk-name">Perception (Wis)</span><span class="ps-sk-val">+5</span></li>
+          <li><span class="ps-tick"></span><span class="ps-sk-name">Performance (Cha)</span><span class="ps-sk-val">+0</span></li>
+          <li><span class="ps-tick"></span><span class="ps-sk-name">Persuasion (Cha)</span><span class="ps-sk-val">+0</span></li>
+          <li><span class="ps-tick filled"></span><span class="ps-sk-name">Religion (Int)</span><span class="ps-sk-val">+2</span></li>
+          <li><span class="ps-tick"></span><span class="ps-sk-name">Sleight of Hand (Dex)</span><span class="ps-sk-val">+4</span></li>
+          <li><span class="ps-tick filled"></span><span class="ps-sk-name">Stealth (Dex)</span><span class="ps-sk-val">+6</span></li>
+          <li><span class="ps-tick"></span><span class="ps-sk-name">Survival (Wis)</span><span class="ps-sk-val">+3</span></li>
+        </ul>
+      </div>
+
+      <div class="ps-box">
+        <ul class="ps-list">
+          <li><span class="ps-sk-name">Passive Perception</span><span class="ps-sk-val">15</span></li>
+          <li><span class="ps-sk-name">Passive Insight</span><span class="ps-sk-val">15</span></li>
+          <li><span class="ps-sk-name">Passive Investigation</span><span class="ps-sk-val">10</span></li>
+          <li><span class="ps-sk-name">Proficiency Bonus</span><span class="ps-sk-val">+2</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="ps-col">
+      <div class="ps-box">
+        <div class="ps-combat-stats">
+          <div><b>17</b><span>Armor Class</span></div>
+          <div><b>+4</b><span>Initiative</span></div>
+          <div><b>40</b><span>Speed (ft)</span></div>
+        </div>
+      </div>
+
+      <div class="ps-box">
+        <div class="ps-hp-row">
+          <div class="ps-hp-box"><b>Hit Point Max</b>27</div>
+          <div class="ps-hp-box"><b>Current HP</b><span class="ps-fill"></span></div>
+          <div class="ps-hp-box"><b>Temp HP</b><span class="ps-fill"></span></div>
+        </div>
+        <div class="ps-hd-ds">
+          <span>Hit Dice 3d8 <span class="ps-ticks"><span class="ps-tick"></span><span class="ps-tick"></span><span class="ps-tick"></span></span></span>
+          <span>Death Saves &mdash; Succ. <span class="ps-ticks"><span class="ps-tick"></span><span class="ps-tick"></span><span class="ps-tick"></span></span> Fail <span class="ps-ticks"><span class="ps-tick"></span><span class="ps-tick"></span><span class="ps-tick"></span></span></span>
+        </div>
+      </div>
+
+      <div class="ps-box">
+        <div class="ps-box-title">Attacks</div>
+        <table class="ps-table">
+          <tr><th>Name</th><th>Atk</th><th>Damage / Type</th></tr>
+          <tr><td>Unarmed Strike</td><td>+6</td><td>1d6+4 bludgeoning</td></tr>
+          <tr><td>Quarterstaff</td><td>+6</td><td>1d6+4 bludgeoning</td></tr>
+          <tr><td>Dagger (&times;7)</td><td>+6</td><td>1d4+4 piercing, thrown 20/60</td></tr>
+        </table>
+      </div>
+
+      <div class="ps-box">
+        <div class="ps-box-title">Resources</div>
+        <ul class="ps-list">
+          <li><span class="ps-sk-name">Focus Points (short/long rest, DC 13)</span><span class="ps-ticks"><span class="ps-tick"></span><span class="ps-tick"></span><span class="ps-tick"></span></span></li>
+          <li><span class="ps-sk-name">Luck Points (long rest)</span><span class="ps-ticks"><span class="ps-tick"></span><span class="ps-tick"></span></span></li>
+          <li><span class="ps-sk-name">Heroic Inspiration (long rest)</span><span class="ps-ticks"><span class="ps-tick"></span></span></li>
+          <li><span class="ps-sk-name">Uncanny Metabolism (long rest)</span><span class="ps-ticks"><span class="ps-tick"></span></span></li>
+        </ul>
+      </div>
+
+      <div class="ps-box">
+        <div class="ps-box-title">Equipment</div>
+        <ul class="ps-list">
+          <li><span class="ps-sk-name">Dagger &times;7, Quarterstaff, Traveler's Clothes, Thieves' Tools, Horn</span><span class="ps-sk-val">16 lb</span></li>
+          <li><span class="ps-sk-name">Backpack, Rations &times;10, Torch &times;10, Bedroll, Rope, Waterskin, Oil &times;2, Tinderbox</span><span class="ps-sk-val">55 lb</span></li>
+          <li><span class="ps-sk-name">Carrying (full pack) / Capacity</span><span class="ps-sk-val">71 / 90 lb</span></li>
+          <li><span class="ps-sk-name">Coin</span><span class="ps-sk-val">27 gp</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="ps-col">
+      <div class="ps-box">
+        <div class="ps-box-title">Proficiencies &amp; Languages</div>
+        <ul class="ps-list">
+          <li><span class="ps-sk-name">Armor</span><span class="ps-sk-val">None</span></li>
+          <li><span class="ps-sk-name">Weapons</span><span class="ps-sk-val">Simple, Scimitar, Shortsword, Hand Crossbow</span></li>
+          <li><span class="ps-sk-name">Tools</span><span class="ps-sk-val">Thieves' Tools +6, Horn</span></li>
+          <li><span class="ps-sk-name">Languages</span><span class="ps-sk-val">Common, Dwarvish, Common Sign</span></li>
+        </ul>
+      </div>
+
+      <div class="ps-box">
+        <div class="ps-box-title">Features &amp; Traits</div>
+        <ul class="ps-features">
+          <li><b>Martial Arts (d6)</b> &mdash; Dex for unarmed/monk weapon attacks, damage &amp; Grapple/Shove DC; bonus action Unarmed Strike.</li>
+          <li><b>Unarmored Defense</b> &mdash; AC = 10 + Dex + Wis.</li>
+          <li><b>Unarmored Movement</b> &mdash; +10 ft speed.</li>
+          <li><b>Flurry of Blows</b> (1 Focus, bonus action) &mdash; Two Unarmed Strikes, each imposing an Open Hand effect.</li>
+          <li><b>Open Hand Technique</b> &mdash; Topple (DC13 Dex or prone); Push (DC13 Str, 15 ft); Addle (no OA until its next turn).</li>
+          <li><b>Patient Defense</b> (1 Focus, bonus action) &mdash; Disengage + Dodge.</li>
+          <li><b>Step of the Wind</b> (1 Focus, bonus action) &mdash; Disengage + Dash, jump doubled.</li>
+          <li><b>Deflect Attacks</b> (reaction) &mdash; Reduce a B/P/S hit by 1d10+7. At 0, 1 Focus redirects: target (5 ft melee/60 ft ranged) DC13 Dex save or 2d6+4 same type.</li>
+          <li><b>Uncanny Metabolism</b> (1/long rest) &mdash; On rolling initiative, regain all Focus and 1d6+3 HP.</li>
+          <li><b>Lucky</b> (2/long rest, feat) &mdash; Advantage on a d20 test, or impose disadvantage on an attack against him.</li>
+          <li><b>Tough</b> (feat) &mdash; +6 HP at 1st level, +2/level after (included above).</li>
+          <li><b>Heroic Inspiration</b> (Human) &mdash; Free after every long rest.</li>
+        </ul>
+      </div>
+
+      <div class="ps-box">
+        <div class="ps-box-title">Personality</div>
+        <ul class="ps-features">
+          <li><b>Traits</b> &mdash; Watches hands, not faces. Doesn't argue: nods, agrees, then does the thing he was going to do.</li>
+          <li><b>Bond</b> &mdash; Bruni's beads, and the word he was named with.</li>
+          <li><b>Flaws</b> &mdash; Tells people what they need to hear; pushes back at anyone who throws their weight around.</li>
+        </ul>
+        <div class="ps-notes-fill"></div>
+        <div class="ps-notes-fill"></div>
+        <div class="ps-notes-fill"></div>
+      </div>
+    </div>
+  </div>
+</div>
 
 <div class="wrap">
 
@@ -713,24 +937,6 @@ details:not([open]) > summary.label{margin-bottom:0;border-bottom-color:var(--ru
         <p>Raki was a poor student for a long time. He couldn't hold a stance and lost to anyone heavier, which was everyone. It took years for Bruni to make the point land. The open hand doesn't generate force, it borrows it. A heavy man committing to a strike gives away everything about where he's going, and Raki had spent his childhood learning to see it coming.</p>
         <p>Someone killed Bruni. Raki was there and it made no difference at all. He is still walking, because it's the only thing he was ever taught to do. Somewhere ahead of him is whoever killed Bruni, and he means to reach them.</p>
       </div>
-    </div>
-    </details>
-  </section>
-
-  <section>
-    <details>
-    <summary class="label">Notes</summary>
-    <div class="notes-block">
-      <div class="notes-line"></div>
-      <div class="notes-line"></div>
-      <div class="notes-line"></div>
-      <div class="notes-line"></div>
-      <div class="notes-line"></div>
-      <div class="notes-line"></div>
-      <div class="notes-line"></div>
-      <div class="notes-line"></div>
-      <div class="notes-line"></div>
-      <div class="notes-line"></div>
     </div>
     </details>
   </section>
